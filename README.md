@@ -182,9 +182,8 @@ public <T> Class<? extends T> getClass(final ConfigurationKey<Class<? extends T>
 ```
 
 官方提供了cas filter参数初始化的方式，大致意思是：
-![输入图片说明](https://images.gitee.com/uploads/images/2021/0202/171142_41916142_2024853.png "cas_config.png")
-
 官方并没有在配置文件中提供所有的配置选项，只提供了最常用的，但是未提供的属性也可以实现配置，可以在@EnableCasClient注解下实现CasClientConfigurer类，并为相关的Filter覆盖适当的配置方法。
+![输入图片说明](https://images.gitee.com/uploads/images/2021/0202/171142_41916142_2024853.png "cas_config.png")
 
 按照示例，即可覆盖原有的
 
@@ -473,10 +472,12 @@ public class CasResponseWrapper extends HttpServletResponseWrapper {
 }
 ```
 
-可能遇到的问题：
-1.跨域
+##### 可能遇到的问题：
+
+###### 1.跨域。
 我的处理方式是在接入前端应用时启了个nginx代理，前端打包放入指定目录，前后端的访问都由nginx代理
-2.浏览器循环跳转或者跳到空白页
+
+###### 2.浏览器循环跳转或者跳到空白页。
 这种情况可能有很多种原因，需要跟踪代码到源码包里面具体查看，因为认证失败可能有多重情况，但是返回到应用端异常查看的时候都一样，比如我在调试的时候遇到service与ticket不匹配，ticket校验不通过的情况，需要检查登录页面url的service参数，与调用认证中心校验时的service是否一致，因为在代码调试过程中，可能有配置错误或者手动修改过配置，校验ticket的时候需要传入service参数与ticket参数，如果不一致，则不能通过，这种情况下可能就会直接认证失败跳到空白页。
 集成springsecurity时，登录后如果未授权，检查授权信息为空，可能就会循环跳转，因为无授权信息，框架会认为校验失败，跳到首页，但是实际上已经登陆过将session写入cookie了，发起请求又认为是认证过的，然后又无权限导致跳转...
 好像还有别的情况会循环重定向...总之debug进去找到原因，然后解决
