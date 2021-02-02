@@ -182,6 +182,7 @@ public <T> Class<? extends T> getClass(final ConfigurationKey<Class<? extends T>
 ```
 
 官方提供了cas filter参数初始化的方式，大致意思是：
+![输入图片说明](https://images.gitee.com/uploads/images/2021/0202/171142_41916142_2024853.png "cas_config.png")
 
 官方并没有在配置文件中提供所有的配置选项，只提供了最常用的，但是未提供的属性也可以实现配置，可以在@EnableCasClient注解下实现CasClientConfigurer类，并为相关的Filter覆盖适当的配置方法。
 
